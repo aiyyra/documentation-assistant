@@ -1,1 +1,11 @@
 fastapi[standard]
+
+
+httpx 
+beautifulsoup4 
+markdownify
+
+langchain-text-splitters
+
+sentence-transformers 
+chromadb
