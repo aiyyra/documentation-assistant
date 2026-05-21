@@ -17,13 +17,11 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Verify Python
+      - name: Setup Virtual Environment
         run: |
-          which python
-          python --version
-
-      - name: Install Dependencies
-        run: |
+          python -m venv venv
+          source venv/bin/activate
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install pytest
 
