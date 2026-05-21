@@ -11,3 +11,7 @@ sentence-transformers
 chromadb
 
 pytest
+
+openai
+
+python-dotenv

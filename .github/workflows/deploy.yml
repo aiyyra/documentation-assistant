@@ -1,12 +1,15 @@
 name: Deploy App
 
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: ["Backend Tests"]
+    types:
+      - completed
 
 jobs:
   deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
     runs-on: self-hosted
 
     steps:

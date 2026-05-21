@@ -257,3 +257,11 @@ Later we can add:
 4. metadata filtering tests
 5. prompt construction tests
 6. hallucination detection tests
+
+---
+
+## Example Retriever Question to check (before augmenting to LLM for output)
+- What is hx-trigger?
+- How do I swap HTML content?
+- How do I make polling requests?
+- How can I update part of the DOM?
