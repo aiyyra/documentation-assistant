@@ -242,3 +242,18 @@ measure whether generated answers are actually supported by retrieved context.
 4. Hallucination Detection
 > `goal` :
 identify unsupported/generated claims outside retrieved evidence.
+
+
+---
+
+## Testing
+**Good Future Test Ideas (Optional)**
+
+Later we can add:
+
+1. retrieval relevance evaluation
+2. reranker evaluation
+3. chunk overlap validation
+4. metadata filtering tests
+5. prompt construction tests
+6. hallucination detection tests
