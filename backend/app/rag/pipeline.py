@@ -8,11 +8,19 @@ from app.retrieval.reranker import (
 
 from app.generation.prompt import build_prompt
 from app.generation.generator import generate_response
+from app.query.rewriter import rewrite_query
 
+from app.generation.citations import (
+    build_citations,
+)
 
 def ask(query: str):
+
+    # make rewrite in pipeline level:
+    rewritten_query = rewrite_query(query)
+
     retrieval_results = hybrid_retrieve(
-        query=query,
+        query=rewritten_query,
         vector_top_k=10,
         bm25_top_k=10,
     )
@@ -44,7 +52,7 @@ def ask(query: str):
         filtered_reranked = reranked[:2]
 
     # Temporary debugging visibility
-    for item in reranked:
+    for item in filtered_reranked:
         print(
             f"[RERANK SCORE] "
             f"{item['rerank_score']:.4f}"
@@ -52,13 +60,17 @@ def ask(query: str):
 
     reranked_documents = [
         item["document"]
-        for item in reranked
+        for item in filtered_reranked
     ]
 
     reranked_metadata = [
         item["metadata"]
-        for item in reranked
+        for item in filtered_reranked
     ]
+
+    citations = build_citations(
+        reranked_metadata
+    )
 
     response_prompt = build_prompt(
         query=query,
@@ -68,9 +80,15 @@ def ask(query: str):
     answer = generate_response(response_prompt)
 
     return {
+        "original_query": query,
+        "rewritten_query": rewritten_query,
+
         "answer": answer,
         "documents": reranked_documents,
         "metadata": reranked_metadata,
+
         "retrieval_results": retrieval_results,
         "reranked_results": reranked,
+
+        "citations": citations,
     }

@@ -1,12 +1,14 @@
 from app.retrieval.embedder import embed_text
 from app.retrieval.vectordb import collection
 
+from app.query.rewriter import rewrite_query
 
 def retrieve_vector(
     query: str,
     top_k: int = 10,
 ):
-    query_embedding = embed_text([query])[0]
+    rewritten_query = rewrite_query(query)
+    query_embedding = embed_text([rewritten_query])[0]
 
     results = collection.query(
         query_embeddings=[query_embedding.tolist()],
