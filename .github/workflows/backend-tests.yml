@@ -26,4 +26,6 @@ jobs:
           pip install pytest
 
       - name: Run Tests
-        run: pytest
+        run: |
+          source venv/bin/activate
+          pytest
