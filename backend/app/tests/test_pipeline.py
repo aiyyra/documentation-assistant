@@ -7,7 +7,7 @@ from app.rag.pipeline import ask
 # We do not want tests depending on real OpenAI API calls.
 # External APIs make tests slow, expensive, and unstable.
 @patch("app.rag.pipeline.generate_response")
-@patch("app.rag.pipeline.retrieve")
+@patch("app.rag.pipeline.retrieve_vector")
 def test_pipeline_returns_expected_structure(
     mock_retrieve,
     mock_generate,
@@ -34,7 +34,7 @@ def test_pipeline_returns_expected_structure(
 # Reason:
 # Pipeline orchestration should pass retrieved chunks into generation.
 @patch("app.rag.pipeline.generate_response")
-@patch("app.rag.pipeline.retrieve")
+@patch("app.rag.pipeline.retrieve_vector")
 def test_pipeline_returns_generated_answer(
     mock_retrieve,
     mock_generate,
@@ -59,7 +59,7 @@ def test_pipeline_returns_generated_answer(
 # Reason:
 # Metadata propagation is important for future citation systems.
 @patch("app.rag.pipeline.generate_response")
-@patch("app.rag.pipeline.retrieve")
+@patch("app.rag.pipeline.retrieve_vector")
 def test_pipeline_preserves_metadata(
     mock_retrieve,
     mock_generate,

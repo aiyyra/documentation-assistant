@@ -24,6 +24,7 @@ def retrieve_bm25(
                     "chunk_index": chunk["chunk_index"],
                 },
                 "bm25_score": float(score),
+                "retrieval_source": "bm25",
             }
         )
 
