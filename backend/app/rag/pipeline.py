@@ -1,4 +1,4 @@
-from app.retrieval.retriever import retrieve
+from app.retrieval.vector_retriever import retrieve
 from app.retrieval.reranker import rerank_results
 
 from app.generation.prompt import build_prompt

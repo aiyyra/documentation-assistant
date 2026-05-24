@@ -15,3 +15,5 @@ pytest
 openai
 
 python-dotenv
+
+rank-bm25

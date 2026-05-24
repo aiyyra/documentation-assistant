@@ -40,4 +40,5 @@ def rerank_results(
         reverse=True,
     )
 
+    
     return reranked[:top_n]
