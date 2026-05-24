@@ -2,7 +2,7 @@ from app.retrieval.embedder import embed_text
 from app.retrieval.vectordb import collection
 
 
-def retrieve(query: str, top_k: int = 5):
+def retrieve(query: str, top_k: int = 15):
     query_embedding = embed_text([query])[0]
 
     results = collection.query(
