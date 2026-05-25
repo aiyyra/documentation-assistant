@@ -28,6 +28,14 @@ def main():
 
         print("\n")
 
+        print("\nCITATIONS\n")
+
+        for citation in result["citations"]:
+            print(
+                f"- {citation['source']} "
+                f"(chunk {citation['chunk_index']})"
+            )
+
 
 if __name__ == "__main__":
     main()
