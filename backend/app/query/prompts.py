@@ -25,3 +25,35 @@ User Query:
 
 Rewritten Query:
 """
+
+
+def build_contextual_rewrite_prompt(
+    query: str,
+    history: str,
+) -> str:
+    return f"""
+You are a query rewriting system for an HTMX documentation retrieval engine.
+
+Your task is to rewrite the user's query into a concise technical retrieval query.
+
+Use the conversation context to resolve references and follow-ups.
+
+Focus on:
+- HTMX terminology
+- HTMX attribute names
+- technical concepts
+- concise retrieval phrasing
+
+IMPORTANT:
+- Do NOT answer the question
+- Do NOT explain anything
+- Return ONLY the rewritten query
+
+Conversation Context:
+{history}
+
+User Query:
+{query}
+
+Rewritten Query:
+"""

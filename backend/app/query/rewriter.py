@@ -2,6 +2,7 @@ from openai import OpenAI
 
 from app.query.prompts import (
     build_rewrite_prompt,
+    build_contextual_rewrite_prompt,
 )
 
 import os
@@ -28,6 +29,37 @@ def rewrite_query(query: str) -> str:
         ],
         # to ensure the output is static and stable: temperature must be 0
         temperature=0, 
+    )
+
+    rewritten_query = (
+        response
+        .choices[0]
+        .message
+        .content
+        .strip()
+    )
+
+    return rewritten_query
+
+
+def rewrite_query_with_history(
+    query: str,
+    history: str,
+) -> str:
+    prompt = build_contextual_rewrite_prompt(
+        query,
+        history,
+    )
+
+    response = client.chat.completions.create(
+        model="gpt-4.1-mini",
+        messages=[
+            {
+                "role": "user",
+                "content": prompt,
+            }
+        ],
+        temperature=0,
     )
 
     rewritten_query = (

@@ -1,4 +1,3 @@
-import os
 import sys
 from pathlib import Path
 
@@ -11,7 +10,7 @@ BACKEND_PATH = REPO_ROOT / "backend"
 if str(BACKEND_PATH) not in sys.path:
     sys.path.insert(0, str(BACKEND_PATH))
 
-from app.rag.pipeline import ask  # noqa: E402
+from app.agent.graph import graph  # noqa: E402
 
 
 st.set_page_config(
@@ -25,6 +24,9 @@ st.caption("Agentic RAG demo (chat-style UI)")
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
+
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
 
 
 def render_message(message: dict) -> None:
@@ -62,7 +64,18 @@ if prompt:
     with st.chat_message("assistant"):
         with st.spinner("Thinking..."):
             try:
-                result = ask(prompt)
+                result = graph.invoke(
+                    {
+                        "query": prompt,
+                        "chat_history": (
+                            st.session_state.chat_history
+                        ),
+                    }
+                )
+                st.session_state.chat_history = result.get(
+                    "chat_history",
+                    st.session_state.chat_history,
+                )
                 answer = result.get("answer", "No answer returned.")
                 citations = result.get("citations", [])
 

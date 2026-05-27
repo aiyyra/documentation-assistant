@@ -20,3 +20,6 @@ rank-bm25
 
 streamlit
 torchvision
+
+langgraph
+langchain-core
