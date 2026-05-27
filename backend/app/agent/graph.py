@@ -17,6 +17,9 @@ from app.agent.nodes.augment_node import (
 from app.agent.nodes.generate_node import (
     generate_node,
 )
+from app.agent.nodes.evaluate_node import (
+    evaluate_node,
+)
 
 
 workflow = StateGraph(AgentState)
@@ -25,6 +28,7 @@ workflow = StateGraph(AgentState)
 workflow.add_node("retrieve", retrieve_node)
 workflow.add_node("augment", augment_node)
 workflow.add_node("generate", generate_node)
+workflow.add_node("evaluate", evaluate_node)
 
 
 # Router function
@@ -49,7 +53,23 @@ workflow.set_conditional_entry_point(
 
 workflow.add_edge("retrieve", "augment")
 workflow.add_edge("augment", "generate")
-workflow.add_edge("generate", END)
+workflow.add_edge("generate", "evaluate")
+
+
+def should_retry(state: AgentState):
+    if state.get("needs_retry"):
+        return "retry"
+    return "end"
+
+
+workflow.add_conditional_edges(
+    "evaluate",
+    should_retry,
+    {
+        "retry": "retrieve",
+        "end": END,
+    },
+)
 
 
 graph = workflow.compile()
@@ -70,6 +90,8 @@ if __name__ == "__main__":
             {
                 "query": query,
                 "chat_history": chat_history,
+                "loop_count": 0,
+                "max_loops": 1,
             }
         )
 

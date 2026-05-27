@@ -1,7 +1,3 @@
-from app.agent.memory import (
-    append_ai_message,
-    append_user_message,
-)
 from app.generation.agent_prompt import (
     build_agent_prompt,
 )
@@ -28,32 +24,6 @@ def generate_node(state):
 
     answer = generate_response(prompt)
 
-    chat_history = append_user_message(
-        chat_history,
-        query,
-    )
-
-    metadata = {
-        "citations": state.get(
-            "citations",
-            [],
-        ),
-        "used_rag": state.get(
-            "used_rag",
-            False,
-        ),
-        "rewritten_query": state.get(
-            "rewritten_query",
-            None,
-        ),
-    }
-
-    chat_history = append_ai_message(
-        chat_history,
-        answer,
-        metadata=metadata,
-    )
-
     route = state.get(
         "route",
         "conversational",
@@ -63,5 +33,4 @@ def generate_node(state):
         **state,
         "route": route,
         "answer": answer,
-        "chat_history": chat_history,
     }

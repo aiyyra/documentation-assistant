@@ -14,7 +14,7 @@ client = OpenAI(
 
 
 SYSTEM_PROMPT = """
-You are a routing system for an HTMX RAG assistant.
+You are a routing system for an HTMX dpcumentation RAG assistant.
 
 Classify the user query into ONE category:
 
@@ -22,8 +22,8 @@ Classify the user query into ONE category:
 - conversational
 
 Use:
-- rag → HTMX/documentation/technical questions
-- conversational → greetings, thanks, casual chat, follow ups or anything not necesserily HTMX-related
+- rag → Medium to Complex HTMX/documentation/technical questions
+- conversational → greetings, thanks, casual chat, Common General Question (Even if related HTMX)
 
 Return ONLY one word:
 - rag

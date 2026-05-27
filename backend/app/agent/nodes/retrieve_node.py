@@ -15,16 +15,25 @@ RERANK_FALLBACK_MIN = 2
 def retrieve_node(state):
     query = state["query"]
     chat_history = state.get("chat_history")
+    retry_reason = state.get("retry_reason")
+
+    query_for_rewrite = (
+        f"{query}\n{retry_reason}"
+        if retry_reason
+        else query
+    )
 
     history_text = format_history(chat_history)
 
     if history_text:
         retrieval_query = rewrite_query_with_history(
-            query,
+            query_for_rewrite,
             history_text,
         )
     else:
-        retrieval_query = rewrite_query(query)
+        retrieval_query = rewrite_query(
+            query_for_rewrite
+        )
 
     retrieval_results = hybrid_retrieve(
         query=retrieval_query,

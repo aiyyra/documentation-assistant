@@ -70,6 +70,8 @@ if prompt:
                         "chat_history": (
                             st.session_state.chat_history
                         ),
+                        "loop_count": 0,
+                        "max_loops": 1,
                     }
                 )
                 st.session_state.chat_history = result.get(

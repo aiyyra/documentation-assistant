@@ -43,7 +43,5 @@ python -m app.ingestion.processor
 python -m app.retrieval.indexer
 ```
 
-## Disclaimer (Query Rewriting Context)
-Currently the rewrite step is based on a small locally hosted Hugging Face model. Because the model context is limited, the full chat history is not passed into the rewrite step.
-
-Better retrieval and context continuity would be achieved by using a larger model and passing the full chat history into the rewriter for improved retrieval quality.
+## Suggested Prompts
+1. Create an example of HTMX for me 

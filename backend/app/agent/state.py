@@ -22,6 +22,14 @@ class AgentState(TypedDict, total=False):
 
     context_block: str
 
+    needs_retry: bool
+
+    retry_reason: str
+
+    loop_count: int
+
+    max_loops: int
+
     retrieval_results: list
 
     reranked_results: list
