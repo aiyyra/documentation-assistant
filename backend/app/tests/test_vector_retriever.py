@@ -1,9 +1,20 @@
+from pathlib import Path
+
+import pytest
+
 from app.retrieval.vector_retriever import retrieve_vector
 
 
-# Reason:
-# Retrieval is the core intelligence layer.
-# We verify the retrieval pipeline returns expected structure.
+CHUNK_PATH = Path(
+    "data/processed/chunks/htmx_chunks.json"
+)
+
+
+@pytest.mark.integration
+@pytest.mark.skipif(
+    not CHUNK_PATH.exists(),
+    reason="chunks not indexed",
+)
 def test_retrieve_returns_results():
     results = retrieve_vector("What is hx-trigger?", top_k=3)
 
@@ -18,16 +29,22 @@ def test_retrieve_returns_results():
     assert "retrieval_source" in first
 
 
-# Reason:
-# top_k behavior is important for retrieval tuning.
+@pytest.mark.integration
+@pytest.mark.skipif(
+    not CHUNK_PATH.exists(),
+    reason="chunks not indexed",
+)
 def test_retrieve_respects_top_k():
     results = retrieve_vector("What is hx-get?", top_k=2)
 
     assert len(results) == 2
 
 
-# Reason:
-# Retrieved chunks should include metadata for future citations.
+@pytest.mark.integration
+@pytest.mark.skipif(
+    not CHUNK_PATH.exists(),
+    reason="chunks not indexed",
+)
 def test_retrieve_returns_metadata():
     results = retrieve_vector("What is hx-post?", top_k=1)
 

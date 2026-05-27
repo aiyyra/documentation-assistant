@@ -1,10 +1,22 @@
+from pathlib import Path
+
+import pytest
+
 from app.retrieval.hybrid_retriever import (
     hybrid_retrieve,
 )
 
 
-# Reason:
-# Hybrid retrieval should return usable results.
+CHUNK_PATH = Path(
+    "data/processed/chunks/htmx_chunks.json"
+)
+
+
+@pytest.mark.integration
+@pytest.mark.skipif(
+    not CHUNK_PATH.exists(),
+    reason="chunks not indexed",
+)
 def test_hybrid_returns_results():
     results = hybrid_retrieve(
         query="hx-trigger",
@@ -13,9 +25,11 @@ def test_hybrid_returns_results():
     assert len(results) > 0
 
 
-# Reason:
-# Retrieval source metadata is important for debugging
-# and future retrieval observability.
+@pytest.mark.integration
+@pytest.mark.skipif(
+    not CHUNK_PATH.exists(),
+    reason="chunks not indexed",
+)
 def test_hybrid_results_include_source_type():
     results = hybrid_retrieve(
         query="hx-get",
@@ -26,9 +40,11 @@ def test_hybrid_results_include_source_type():
     assert "retrieval_source" in result
 
 
-# Reason:
-# Duplicate chunks waste reranking capacity and token budget.
-# Hybrid retrieval should deduplicate results.
+@pytest.mark.integration
+@pytest.mark.skipif(
+    not CHUNK_PATH.exists(),
+    reason="chunks not indexed",
+)
 def test_hybrid_results_are_deduplicated():
     results = hybrid_retrieve(
         query="hx-post",
@@ -42,8 +58,11 @@ def test_hybrid_results_are_deduplicated():
     assert len(documents) == len(set(documents))
 
 
-# Reason:
-# Metadata integrity must survive retrieval fusion.
+@pytest.mark.integration
+@pytest.mark.skipif(
+    not CHUNK_PATH.exists(),
+    reason="chunks not indexed",
+)
 def test_hybrid_preserves_metadata():
     results = hybrid_retrieve(
         query="hx-swap",

@@ -1,9 +1,15 @@
+import os
+
+import pytest
+
 from app.retrieval.reranker import rerank_results
 
 
-# Reason:
-# Reranker should always respect top_n limits.
-# This is important for token budgeting and retrieval control.
+@pytest.mark.integration
+@pytest.mark.skipif(
+    not os.getenv("RUN_INTEGRATION_TESTS"),
+    reason="integration tests not enabled",
+)
 def test_reranker_respects_top_n():
     query = "What is hx-trigger?"
 
@@ -29,9 +35,11 @@ def test_reranker_respects_top_n():
     assert len(results) == 2
 
 
-# Reason:
-# Reranker output structure should remain stable.
-# Downstream pipeline depends on these fields.
+@pytest.mark.integration
+@pytest.mark.skipif(
+    not os.getenv("RUN_INTEGRATION_TESTS"),
+    reason="integration tests not enabled",
+)
 def test_reranker_returns_expected_fields():
     query = "What is hx-get?"
 
@@ -56,9 +64,11 @@ def test_reranker_returns_expected_fields():
     assert "rerank_score" in result
 
 
-# Reason:
-# Metadata must survive reranking.
-# Future citations depend on metadata integrity.
+@pytest.mark.integration
+@pytest.mark.skipif(
+    not os.getenv("RUN_INTEGRATION_TESTS"),
+    reason="integration tests not enabled",
+)
 def test_reranker_preserves_metadata():
     query = "What is hx-post?"
 
@@ -85,9 +95,11 @@ def test_reranker_preserves_metadata():
     assert metadata["chunk_index"] == 3
 
 
-# Reason:
-# Reranker scores should be sorted descending.
-# Highest relevance should appear first.
+@pytest.mark.integration
+@pytest.mark.skipif(
+    not os.getenv("RUN_INTEGRATION_TESTS"),
+    reason="integration tests not enabled",
+)
 def test_reranker_returns_sorted_scores():
     query = "What is hx-trigger?"
 

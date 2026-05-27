@@ -1,10 +1,17 @@
+import os
+
+import pytest
+
 from app.query.rewriter import (
     rewrite_query,
 )
 
 
-# Reason:
-# Query rewriting should always return a string.
+@pytest.mark.openai
+@pytest.mark.skipif(
+    not os.getenv("OPENAI_API_KEY"),
+    reason="OPENAI_API_KEY not set",
+)
 def test_rewriter_returns_string():
     rewritten = rewrite_query(
         "How do I trigger requests?"
@@ -13,8 +20,11 @@ def test_rewriter_returns_string():
     assert isinstance(rewritten, str)
 
 
-# Reason:
-# Empty rewritten queries would break retrieval.
+@pytest.mark.openai
+@pytest.mark.skipif(
+    not os.getenv("OPENAI_API_KEY"),
+    reason="OPENAI_API_KEY not set",
+)
 def test_rewriter_returns_non_empty_output():
     rewritten = rewrite_query(
         "How do I update HTML?"
